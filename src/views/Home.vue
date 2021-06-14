@@ -1,15 +1,30 @@
 <template>
-  <hello-world />
+  <!-- <v-app id="inspire"> -->
+    <v-container fluid>
+      <v-row align="center" justify="center">
+        <h1>Bem vindo a Home</h1>
+      </v-row>
+    </v-container>
+  <!-- </v-app> -->
 </template>
 
 <script>
-  import HelloWorld from '../components/HelloWorld'
-
+  
   export default {
     name: 'Home',
 
     components: {
-      HelloWorld,
+  
+    },
+
+    created () {
+  
     },
   }
 </script>
+
+<style scoped>
+  h1 {
+    color: white;
+  }
+</style>

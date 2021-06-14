@@ -8,13 +8,14 @@ class usuario_dao {
     }
 
     function acessar (usuario $obj) {
+
         $response = array(
             "success"=>false,
             "data"=>"",
             "msg"=>"Não permitido! Dados inválidos!"
         );
 
-        $stmt = $this->con->prepare("SELECT * 
+        $stmt = $this->con->prepare("SELECT nome, email, foto
         FROM usuario
         WHERE email = ? AND senha = ?");
         $stmt->bind_param('ss', $email, $senha);

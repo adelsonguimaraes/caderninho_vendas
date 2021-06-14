@@ -1,5 +1,11 @@
 <template>
   <v-app id="inspire">
+
+    <h1 align="center">
+        Caderninho de Vendas
+        <small>Acompanhamento de pedidos e vendas</small>
+    </h1>
+
     <v-container class="fill-height" fluid>
       <v-row
         align="center"
@@ -10,17 +16,13 @@
           sm="8"
           md="4"
         >
-          <h1 align="center">
-              Cardeninho de Vendas
-          </h1>
-
           <v-card class="elevation-12">
             <v-toolbar
               color="primary"
               dark
               flat
             >
-              <v-toolbar-title>Acesso</v-toolbar-title>
+              <v-toolbar-title>Acessar</v-toolbar-title>
               <v-spacer></v-spacer>
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
@@ -68,7 +70,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click.prevent="acessar" :disabled="obj.email =='' || obj.senha ==''">Acessar</v-btn>
+              <v-btn color="primary" @click.prevent="acessar" :disabled="formValid">Acessar</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -87,6 +89,20 @@
       error: '',
       resetPassword: false
     }),
+
+    computed: {
+      formValid: function () {
+        return (this.obj.email !== '' && this.obj.senha !== '') ? false : true;
+      }
+    },
+
+    created () {
+      let session = JSON.parse(sessionStorage.getItem('caderninho_vendas'));
+      if (session!==null) {
+        this.$router.push({name: 'App'});
+      }
+    },
+
     methods: {
       acessar() {
         let copy = Object.assign(this.obj)
@@ -101,7 +117,8 @@
             sessionStorage.setItem('caderninho_vendas', JSON.stringify({
                 jwt: json.data
             }));
-            this.$router.push({name: 'Home'});
+            // this.$store.state.session = json.data.dados;
+            this.$router.push({name: 'app.home'});
           }else{
             this.error = json.msg;
           }
@@ -115,5 +132,14 @@
   h1 {
     padding: 30px 0;
     font-weight: bold;
+    font-size: 45px;
+    color: burlywood;
+    text-shadow: 3px 3px rgb(35 35 35);
+    position: absolute;
+    width: 100%;
+  }
+  small {
+    font-size: 20px;
+    display: block;
   }
 </style>

@@ -7,14 +7,14 @@
             <v-list dense>
                 <v-list-item>
                     <v-list-item-content>
-                    <v-card class="mx-auto" max-width="220px">
-                        <v-img class="align-end" width="220px" :src="require('./assets/profile.jpg')">
-                        <v-card-title>Usuário</v-card-title>
+                    <v-card class="mx-auto hover-scale-5s" max-width="220px">
+                        <v-img class="align-end" width="220px" :src="'data:image/jpeg;base64,'+session.dados.foto">
                         </v-img>
+                        <v-card-title>{{session.dados.nome}}</v-card-title>
                     </v-card>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item @click.prevent="navigateTo('Home')">
+                <v-list-item class="hover-scale-5s" @click.prevent="navigateTo('app.home')">
                     <v-list-item-action>
                     <v-icon>mdi-home</v-icon>
                     </v-list-item-action>
@@ -22,7 +22,7 @@
                     <v-list-item-title>Home</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item @click.prevent="navigateTo('About')">
+                <v-list-item class="hover-scale-5s" @click.prevent="navigateTo('app.about')">
                     <v-list-item-action>
                     <v-icon>mdi-email</v-icon>
                     </v-list-item-action>
@@ -32,7 +32,7 @@
                     </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item @click.prevent="navigateTo('Produtos')">
+                <v-list-item class="hover-scale-5s" @click.prevent="navigateTo('app.produtos')">
                     <v-list-item-action>
                     <v-icon>mdi-email</v-icon>
                     </v-list-item-action>
@@ -42,7 +42,7 @@
                     </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item link @click.prevent="alterTheme">
+                <v-list-item class="hover-scale-5s" link @click.prevent="alterTheme">
                     <v-list-item-action>
                     <v-icon>mdi-animation</v-icon>
                     </v-list-item-action>
@@ -61,23 +61,24 @@
             <v-toolbar-title>Application</v-toolbar-title>
         </v-app-bar>
 
-        <v-main>
+        <!-- <v-main> -->
             <!-- class="fill-height" -->
-            <v-container
+            <!-- <v-container
+            class="fill-width"
             fluid
             >
-            <v-row
-                align="center"
-                justify="center"
-            >
-                <v-col class="text-center">
+                <v-row
+                    align="center"
+                    justify="center"
+                >
+                    <v-col class="text-center"> -->
 
-                <router-view></router-view>
+                    <router-view></router-view>
 
-                </v-col>
-            </v-row>
-            </v-container>
-        </v-main>
+                    <!-- </v-col>
+                </v-row>
+            </v-container> -->
+        <!-- </v-main> -->
         <v-footer
             :color="tema"
             app
@@ -90,12 +91,9 @@
 <script>
 
 export default {
-  name: 'App',
-  props: {
-    source: String,
-  },
+  name: 'Base',
   data: () => ({
-    drawer: null,
+    drawer: false,
     tema: '',
     rota: ''
   }),
@@ -109,8 +107,23 @@ export default {
       this.$router.push({name: where});
     }
   },
+  computed: {
+      session() {
+          return this.$store.state.session
+      } 
+  },
   created () {
+    console.log(this.session);
     this.$vuetify.theme.dark = true
   },
 };
 </script>
+
+<style scoped>
+    .hover-scale-5s {
+        transition: .5s;
+    }
+    .hover-scale-5s:hover{
+        transform: scale(1.02);
+    }
+</style>

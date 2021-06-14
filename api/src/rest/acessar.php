@@ -4,7 +4,7 @@
     date_default_timezone_set('America/Manaus');
 
     require_once __DIR__ . "/../invoke/invoke.php";
-    invoke::call('usuario');
+    invoke::call('usuario', false);
 
     $json = $_REQUEST;
     if (empty($json)) $json = file_get_contents ( "php://input" );
@@ -36,6 +36,7 @@
 
     function post () {
         global $json;
+
         $control = new usuario_control($json);
         $response = $control->acessar();
         echo json_encode($response);
