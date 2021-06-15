@@ -114,9 +114,9 @@
         .then(r=>r.json())
         .then(json => {
           if (json.success) {
-            sessionStorage.setItem('caderninho_vendas', JSON.stringify({
-                jwt: json.data
-            }));
+            sessionStorage.setItem('caderninho_vendas', JSON.stringify(
+                json.data
+            ));
             // this.$store.state.session = json.data.dados;
             this.$router.push({name: 'app.home'});
           }else{

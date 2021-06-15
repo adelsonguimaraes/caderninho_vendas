@@ -5,7 +5,7 @@
     date_default_timezone_set('America/Manaus');
 
     require_once __DIR__ . "/../invoke/invoke.php";
-    invoke::call();
+    invoke::call(null, "true");
 
     
 

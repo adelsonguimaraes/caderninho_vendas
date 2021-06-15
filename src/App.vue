@@ -14,7 +14,6 @@ export default {
   }),
   
   created() {
-    console.log(this.session);
     if (this.session===null) {
       if (this.$router.currentRoute.name.indexOf('Login')===-1) this.$router.push({name: 'Login'});
     }else{
@@ -31,10 +30,8 @@ export default {
       let session = JSON.parse(sessionStorage.getItem('caderninho_vendas'));
       if (session==null) return session;
       // limpando dados autenticados
-      let split = session.jwt.split('.');
-      let payload = JSON.parse(atob(split[1]));
-      this.$store.state.session = payload;
-      return payload;
+      this.$store.state.session = session;
+      return session;
     }
   }
 };

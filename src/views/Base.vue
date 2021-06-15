@@ -8,9 +8,9 @@
                 <v-list-item>
                     <v-list-item-content>
                     <v-card class="mx-auto hover-scale-5s" max-width="220px">
-                        <v-img class="align-end" width="220px" :src="'data:image/jpeg;base64,'+session.dados.foto">
+                        <v-img class="align-end" width="220px" :src="'data:image/jpeg;base64,'+session.foto">
                         </v-img>
-                        <v-card-title>{{session.dados.nome}}</v-card-title>
+                        <v-card-title>{{session.nome}}</v-card-title>
                     </v-card>
                     </v-list-item-content>
                 </v-list-item>

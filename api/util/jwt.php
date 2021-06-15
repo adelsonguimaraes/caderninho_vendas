@@ -52,7 +52,7 @@ class jwt {
 
             // verificando o tempo de validade do token 1200s (20 minutos)
             $payload_decode = json_decode(base64_decode($payload));
-            $data_exp = (new DateTime())->setTimestamp($payload_decode->exp)->add(new DateInterval("PT{self::$time}S"))->getTimestamp();//format('Y-m-d H:i:s');
+            $data_exp = (new DateTime())->setTimestamp($payload_decode->exp)->add(new DateInterval("PT".self::$time."S"))->getTimestamp();//format('Y-m-d H:i:s');
             $now = (new DateTime("now"))->getTimestamp();
 
             // validando

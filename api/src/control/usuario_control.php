@@ -19,10 +19,16 @@ class usuario_control {
         
         $resp = $this->obj_dao->acessar($o);
         if (!$resp['success']) return $resp;
+        $data = $resp['data'];
 
-        $key = jwt::generate($resp['data']);
+        
 
-        $resp['data'] = $key;
+        $key = jwt::generate(array(
+            "nome"=>$data->nome,
+            "email"=>$data->email
+        ));
+
+        $resp['data']->jwt = $key;
 
         return $resp;
     }

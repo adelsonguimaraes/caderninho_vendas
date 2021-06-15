@@ -4,36 +4,41 @@ class usuario_dao {
     protected $con;
 
     public function __construct () {
-        $this->con = conexao::getinstance()->getConexao();
+        $this->con = conexao_pdo::getinstance()->getConexao();
     }
 
     function acessar (usuario $obj) {
-
         $response = array(
             "success"=>false,
             "data"=>"",
             "msg"=>"Não permitido! Dados inválidos!"
         );
 
-        $stmt = $this->con->prepare("SELECT nome, email, foto
-        FROM usuario
-        WHERE email = ? AND senha = ?");
-        $stmt->bind_param('ss', $email, $senha);
+        try {
 
-        $email = $obj->getEmail();
-        $senha = $obj->getSenha();
+            $stmt = $this->con->prepare("SELECT nome, email, foto
+            FROM usuario
+            WHERE email = :email AND senha = :senha");
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':senha', $senha);
 
-        $stmt->execute();
+            $email = $obj->getEmail();
+            $senha = $obj->getSenha();
 
-        $result = $stmt->get_result();
-        $obj = $result->fetch_object();
+            $result = $stmt->execute();
+            $obj = $stmt->fetchObject();
 
-        if (!$result || empty($obj)) return $response;
-        
-        $response['success'] = true;
-        $response['data'] = $obj;
-        $response['msg'] = '';
+            if (!$result || empty($obj)) return $response;
+            
+            $response['success'] = true;
+            $response['data'] = $obj;
+            $response['msg'] = '';
 
-        return $response;
+            return $response;
+        }catch(PDOException $e) {
+            $response['success'] = false;
+            $response['data'] = '';
+            $response['msg'] = $e->message();
+        }
     }
 }
