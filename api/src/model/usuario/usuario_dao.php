@@ -16,7 +16,7 @@ class usuario_dao {
 
         try {
 
-            $stmt = $this->con->prepare("SELECT nome, email, foto
+            $stmt = $this->con->prepare("SELECT id, nome, email, foto
             FROM usuario
             WHERE email = :email AND senha = :senha");
             $stmt->bindParam(':email', $email);
@@ -34,11 +34,12 @@ class usuario_dao {
             $response['data'] = $obj;
             $response['msg'] = '';
 
-            return $response;
         }catch(PDOException $e) {
             $response['success'] = false;
             $response['data'] = '';
-            $response['msg'] = $e->message();
+            $response['msg'] = $e->getMessage();
         }
+
+        return $response;
     }
 }

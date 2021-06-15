@@ -8,10 +8,18 @@
         <v-data-table
           :headers="headers"
           :items="itens"
-          sort-by="calories"
+          sort-by="id"
           class="elevation-1"
         >
           <template v-slot:top>
+            <v-alert
+              dense
+              outlined
+              type="error"
+              v-if="error!=''"
+            >
+              {{error}}
+            </v-alert>
             <v-toolbar flat color="indigo">
               <v-toolbar-title>Produtos</v-toolbar-title>
               <v-divider
@@ -39,19 +47,16 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6" md="4">
-                          <v-text-field v-model="editedItem.name" label="Dessert name"></v-text-field>
+                          <v-text-field v-model="editedItem.nome" label="Nome"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
-                          <v-text-field v-model="editedItem.calories" label="Calories"></v-text-field>
+                          <v-text-field v-model="editedItem.preco" label="Preço"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
-                          <v-text-field v-model="editedItem.fat" label="Fat (g)"></v-text-field>
+                          <v-text-field v-model="editedItem.quantidade" label="Estoque"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
-                          <v-text-field v-model="editedItem.carbs" label="Carbs (g)"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field v-model="editedItem.protein" label="Protein (g)"></v-text-field>
+                          <v-text-field v-model="editedItem.foto" label="Foto"></v-text-field>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -91,10 +96,12 @@
 </template>
 
 <script>
+  import MD5 from 'crypto-js/md5';
 
   export default {
     data() {
       return {
+        error: '',
         dialog: false,
         headers: [
           {
@@ -113,30 +120,37 @@
             text: 'Estoque',
             align: 'start',
             sortable: true,
-            value: 'estoque',
+            value: 'quantidade',
+          },
+          {
+            text: 'Foto',
+            align: 'center',
+            sortable: false,
+            value: 'foto',
           }
         ],
         itens: [],
+        editedIndex: -1,
         editedItem: {
-          name: '',
-          calories: 0,
-          fat: 0,
-          carbs: 0,
-          protein: 0,
+          id: 0,
+          nome: '',
+          preco: 0,
+          quantidade: 0,
+          foto: ''
         },
         defaultItem: {
-          name: '',
-          calories: 0,
-          fat: 0,
-          carbs: 0,
-          protein: 0,
+          id: 0,
+          nome: '',
+          preco: 0,
+          quantidade: 0,
+          foto: ''
         },
       }
     },
 
     computed: {
       formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+        return this.editedIndex === -1 ? 'Novo Cadastro' : 'Atualização'
       },
     },
 
@@ -147,7 +161,10 @@
     },
 
     created () {
-      this.initialize()
+      this.initialize();
+    },
+    mounted () {
+      this.$store.getters.inSession(this.$router);
     },
 
     methods: {
@@ -155,7 +172,7 @@
 
         let jwt = JSON.parse(sessionStorage.getItem('caderninho_vendas')).jwt;
 
-        fetch('http://localhost/caderninho_vendas/api/src/rest/produto.php', {
+        fetch('http://localhost/caderninho_vendas/api/src/rest/produto.php?idusuario=' + MD5(this.$store.state.session.id), {
           method:'GET',
           headers: {
               'Authorization': 'baerer ' + jwt
@@ -163,7 +180,15 @@
         })
         .then(r => r.json())
         .then(json => {
-          console.log(json);
+          if (json.success) {
+            this.error = '';
+            this.itens = json.data;
+          }else{
+            this.error = json.msg;
+            if (!json.authorized)  {
+              this.$store.getters.logout(this.$router);
+            }
+          }
         });
       },
       editItem (item) {

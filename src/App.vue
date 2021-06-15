@@ -13,26 +13,17 @@ export default {
   data: () => ({
   }),
   
-  created() {
-    if (this.session===null) {
-      if (this.$router.currentRoute.name.indexOf('Login')===-1) this.$router.push({name: 'Login'});
-    }else{
-      if (this.$router.currentRoute.name.indexOf("app.home")===-1) this.$router.push({name: 'app.home'});
-    }
+  mounted() {
+    // if (this.$store.getters.getSession===null) {
+    //   if (this.$router.currentRoute.name.indexOf('Login')===-1) this.$router.push({name: 'Login'});
+    // }else{
+    //   if (this.$router.currentRoute.name.indexOf('Login')!==-1) this.$router.push({name: 'app.home'});
+    // }
+    this.$store.getters.inSession(this.$router);
   },
   computed: {
-    session() {
-      return this.getSession();
-    }
   },
   methods:{
-    getSession: function () {
-      let session = JSON.parse(sessionStorage.getItem('caderninho_vendas'));
-      if (session==null) return session;
-      // limpando dados autenticados
-      this.$store.state.session = session;
-      return session;
-    }
   }
 };
 

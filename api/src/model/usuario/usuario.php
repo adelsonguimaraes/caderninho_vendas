@@ -1,6 +1,6 @@
 <?php
 
-class usuario {
+class usuario implements JsonSerializable {
     private $id;
     private $nome;
     private $email;

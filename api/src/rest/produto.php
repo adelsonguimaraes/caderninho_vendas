@@ -5,13 +5,14 @@
     date_default_timezone_set('America/Manaus');
 
     require_once __DIR__ . "/../invoke/invoke.php";
-    invoke::call(null, "true");
+    invoke::call("produto", true);
 
     
 
     $json = $_REQUEST;
-    if (empty($json)) $json = file_get_contents ( "php://input" );
-    if (gettype($json) === 'string') $json = json_decode($json);
+    if (empty($json)) $json = file_get_contents ( "php://input" ); // caso não esteja no request
+    if (gettype($json) === 'string') $json = json_decode($json); // caso senha string
+    if (gettype($json) !== 'object') $json = (object) $json; // caso não seja um objeto
 
     switch ($_SERVER['REQUEST_METHOD']) {
         case 'GET': {
@@ -34,12 +35,13 @@
 
     function get () {
         global $json;
-        var_dump($json);
+        $control = new produto_control($json);
+        $response = $control->listar();
+        echo json_encode($response);
     }
 
     function post () {
         global $json;
-        var_dump($json);
     }
 
 ?>

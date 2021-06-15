@@ -1,5 +1,5 @@
 <template>
-    <v-app id="inspire">
+    <v-app id="inspire" v-if="this.$store.getters.getSession!==null">
         <v-navigation-drawer
             v-model="drawer"
             app
@@ -8,7 +8,7 @@
                 <v-list-item>
                     <v-list-item-content>
                     <v-card class="mx-auto hover-scale-5s" max-width="220px">
-                        <v-img class="align-end" width="220px" :src="'data:image/jpeg;base64,'+session.foto">
+                        <v-img class="align-end" width="220px" :src="profile_image">
                         </v-img>
                         <v-card-title>{{session.nome}}</v-card-title>
                     </v-card>
@@ -110,10 +110,15 @@ export default {
   computed: {
       session() {
           return this.$store.state.session
-      } 
+      },
+      profile_image() {
+          return (this.session===null) ? '' : ('data:image/jpeg;base64,'+ this.session.foto);
+      }
+  },
+  mounted() {
+      this.$store.getters.inSession(this.$router);
   },
   created () {
-    console.log(this.session);
     this.$vuetify.theme.dark = true
   },
 };
