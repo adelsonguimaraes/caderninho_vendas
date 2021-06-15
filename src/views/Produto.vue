@@ -46,11 +46,29 @@
                   <v-card-text>
                     <v-container>
                       <v-row>
-                        <v-col cols="12" sm="6" md="4">
+                        <v-col cols="12" sm="12" md="12">
                           <v-text-field v-model="editedItem.nome" label="Nome"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
-                          <v-text-field v-model="editedItem.preco" label="Preço"></v-text-field>
+                          <!-- <v-text-field prefix="R$" v-model="editedItem.preco" label="Preço"></v-text-field> -->
+                          <v-text-field-money
+                            v-model="editedItem.preco"
+                            label="preco"
+                            v-bind:properties="{
+                              prefix: 'R$',
+                              readonly: false,
+                              disabled: false,
+                              outlined: false,
+                              clearable: true,
+                              placeholder: ' ',
+                            }"
+                            v-bind:options="{
+                              locale: 'pt-BR',
+                              length: 6,
+                              precision: 2,
+                              empty: null,
+                            }"
+                          />
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field v-model="editedItem.quantidade" label="Estoque"></v-text-field>
@@ -64,8 +82,8 @@
 
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                    <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                    <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+                    <v-btn color="blue darken-1" text @click="save">Salvar</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -87,7 +105,7 @@
             </v-icon>
           </template>
           <template v-slot:no-data>
-            <v-btn color="primary" @click="initialize">Reset</v-btn>
+            <v-btn color="primary" @click="initialize">Refresh</v-btn>
           </template>
         </v-data-table>
       </v-col>
@@ -96,7 +114,7 @@
 </template>
 
 <script>
-  import MD5 from 'crypto-js/md5';
+  // import MD5 from 'crypto-js/md5';
 
   export default {
     data() {
@@ -172,7 +190,7 @@
 
         let jwt = JSON.parse(sessionStorage.getItem('caderninho_vendas')).jwt;
 
-        fetch('http://localhost/caderninho_vendas/api/src/rest/produto.php?idusuario=' + MD5(this.$store.state.session.id), {
+        fetch('http://localhost/caderninho_vendas/api/src/rest/produto.php?idusuario=' + this.$store.state.session.id, {
           method:'GET',
           headers: {
               'Authorization': 'baerer ' + jwt

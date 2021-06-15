@@ -16,7 +16,7 @@ class usuario_dao {
 
         try {
 
-            $stmt = $this->con->prepare("SELECT id, nome, email, foto
+            $stmt = $this->con->prepare("SELECT MD5(id), nome, email, foto
             FROM usuario
             WHERE email = :email AND senha = :senha");
             $stmt->bindParam(':email', $email);

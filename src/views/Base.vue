@@ -42,12 +42,20 @@
                     </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item class="hover-scale-5s" link @click.prevent="alterTheme">
+                <v-list-item class="hover-scale-5s" @click.prevent="alterTheme">
                     <v-list-item-action>
                     <v-icon>mdi-animation</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
                     <v-list-item-title>Tema</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item class="hover-scale-5s" @click.prevent="logout">
+                    <v-list-item-action>
+                    <v-icon>mdi-logout</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                    <v-list-item-title>Sair</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
@@ -61,24 +69,10 @@
             <v-toolbar-title>Application</v-toolbar-title>
         </v-app-bar>
 
-        <!-- <v-main> -->
-            <!-- class="fill-height" -->
-            <!-- <v-container
-            class="fill-width"
-            fluid
-            >
-                <v-row
-                    align="center"
-                    justify="center"
-                >
-                    <v-col class="text-center"> -->
+        <template>
+            <router-view></router-view>
+        </template>
 
-                    <router-view></router-view>
-
-                    <!-- </v-col>
-                </v-row>
-            </v-container> -->
-        <!-- </v-main> -->
         <v-footer
             :color="tema"
             app
@@ -105,6 +99,9 @@ export default {
     navigateTo(where) {
       if (this.$router.currentRoute.name === where) return false;
       this.$router.push({name: where});
+    },
+    logout () {
+      this.$store.getters.logout(this.$router);
     }
   },
   computed: {
