@@ -9,8 +9,13 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '*',
+    path: '/',
     name: 'Login',
+    component: Login
+  },
+  {
+    path: '*',
+    name: '404',
     component: Login
   },
   {

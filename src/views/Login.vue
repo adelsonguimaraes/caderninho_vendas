@@ -65,6 +65,7 @@
                   type="password"
                   v-model="obj.senha"
                   autocomplete="off"
+                  @keyup.enter="acessar"
                 ></v-text-field>
               </v-form>
             </v-card-text>
@@ -83,8 +84,8 @@
   export default ({
     data:() => ({
       obj: {
-        email: '',
-        senha: ''
+        email: 'adelsonguimaraes@gmail.com',
+        senha: '123456'
       },
       error: '',
       resetPassword: false

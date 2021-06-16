@@ -71,10 +71,12 @@
                           />
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
-                          <v-text-field v-model="editedItem.quantidade" label="Estoque"></v-text-field>
+                          <v-text-field v-model="editedItem.quantidade" type="tel" label="Estoque" @keyup.prevent="only_number()"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
-                          <v-text-field v-model="editedItem.foto" label="Foto"></v-text-field>
+                          <!-- <v-text-field v-model="editedItem.foto" label="Foto"></v-text-field> -->
+                          <v-file-input truncate-length="15" counter label="Imagem">
+                          </v-file-input>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -115,7 +117,7 @@
 
 <script>
   // import MD5 from 'crypto-js/md5';
-
+  
   export default {
     data() {
       return {
@@ -153,14 +155,14 @@
           id: 0,
           nome: '',
           preco: 0,
-          quantidade: 0,
+          quantidade: '',
           foto: ''
         },
         defaultItem: {
           id: 0,
           nome: '',
           preco: 0,
-          quantidade: 0,
+          quantidade: '',
           foto: ''
         },
       }
@@ -186,6 +188,13 @@
     },
 
     methods: {
+      only_number () {
+        // eventos para o keydown
+        // let KC = $event.keyCode;
+        // this.editedItem.quantidade += $event.key.replace(/\D/gi, '');
+        this.editedItem.quantidade = this.editedItem.quantidade.replace(/\D/gi, '');
+      },
+
       initialize () {
 
         let jwt = JSON.parse(sessionStorage.getItem('caderninho_vendas')).jwt;
@@ -210,6 +219,8 @@
         });
       },
       editItem (item) {
+        console.log(item);
+
         this.editedIndex = this.desserts.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true

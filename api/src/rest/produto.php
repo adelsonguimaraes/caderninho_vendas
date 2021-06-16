@@ -6,7 +6,6 @@
 
     require_once __DIR__ . "/../invoke/invoke.php";
     invoke::call("produto", true);
-
     
 
     $json = $_REQUEST;
