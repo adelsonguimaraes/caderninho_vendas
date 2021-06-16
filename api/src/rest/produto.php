@@ -7,7 +7,6 @@
     require_once __DIR__ . "/../invoke/invoke.php";
     invoke::call("produto", true);
     
-
     $json = $_REQUEST;
     if (empty($json)) $json = file_get_contents ( "php://input" ); // caso não esteja no request
     if (gettype($json) === 'string') $json = json_decode($json); // caso senha string
