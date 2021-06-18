@@ -18,16 +18,16 @@ class response implements JsonSerializable {
         $this->authorized = $authorized;
     }
 
-    public function getsuccess () {
+    public function getSuccess () {
         return $this->success;
     }
-    public function getdata () {
+    public function getData () {
         return $this->data;
     }
-    public function getmsg () {
+    public function getMsg () {
         return $this->msg;
     }
-    public function getauthorized () {
+    public function getAuthorized () {
         return $this->authorized;
     }
 
